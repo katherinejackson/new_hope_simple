@@ -1,0 +1,97 @@
+<!-- Katherine Jackson, 11142976, kmj908
+CMPT 353 -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title> 353 project </title>
+  <script type="text/javascript">
+    "use strict";
+
+    function formatTableString(cols) {
+      var returnString = "<tr>"
+      for (var col in cols)
+        returnString += "<td>" + col + "</td>"
+
+      return returnString += "</tr>"
+    }
+
+    function searchDog() {
+            var xhttp = new XMLHttpRequest();
+            console.log('making request')
+
+            xhttp.open("POST", `http://localhost:8080/searchdog`, true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send();
+
+            xhttp.onreadystatechange = function() {
+                if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
+
+                    const data = JSON.parse(xhttp.responseText)
+                    console.log(xhttp.responseText)
+
+                    var tableString = "<th>Name</th>" + "<th>Age</th>" + "<th>Breed</th>" + "<th>Gender</th>" + "<th>Status</th>";
+                    for (var dog in data) {
+                        var name = data[entry].name;
+                        var breed = data[entry].breed;
+                        var gender = data[entry].gender;
+                        var age = data[entry].age;
+                        var status = data[entry].status;
+                        tableString += formatTableString([name, age, breed, gender, status])
+                    }
+
+                    document.getElementById("dogResults").innerHTML = tableString;
+                }
+            };
+        }
+  </script>
+</head>
+
+<body>
+
+
+  <h2>Add a New Dog</h2>
+  <form action="/postdog" method="post" style="display: flex; flex-direction: column; max-width: 50%;">
+    <label for="topic">Name:</label>
+    <input name="name" id="name" type="text" value="">
+
+    <label for="data">Breed:</label>
+    <input id="breed" name="breed" type="text" value=""></input>
+
+    <label for="data">Age:</label>
+    <input id="age" name="age" type="text" value=""></input>
+
+    <label for="data">Gender:</label>
+    <input id="gender" name="gender" type="text" value=""></input>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <h2>Search for Dog</h2>
+  <form onsubmit="searchDog()" style="display: flex; flex-direction: column; max-width: 50%;">
+    <label for="topic">Name:</label>
+    <input name="name" id="searchName" type="text" value="">
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <table id="dogResults"></table>
+
+
+  <h2>Add a New Staff</h2>
+  <form action="/poststaff" method="post" style="display: flex; flex-direction: column; max-width: 50%;">
+    <label for="topic">Last Name:</label>
+    <input name="lastName" id="lastName" type="text" value="">
+
+    <label for="data">First Name:</label>
+    <input id="firstName" name="firstName" type="text" value=""></input>
+
+    <label for="data">Phone Number:</label>
+    <input id="phone" name="phone" type="text" value=""></input>
+
+    <input type="submit" value="Submit">
+  </form>
+</body>
+
+</html>

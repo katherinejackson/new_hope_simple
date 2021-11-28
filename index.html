@@ -1,0 +1,57 @@
+<!-- Katherine Jackson, 11142976, kmj908
+CMPT 353 -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title> 353 project </title>
+  <script type="text/javascript">
+    "use strict";
+
+    function formatTableString(cols) {
+      var returnString = "<tr>"
+      for (var col in cols)
+        returnString += "<td>" + cols[col] + "</td>"
+
+      return returnString += "</tr>"
+    }
+
+    function getHomeVisits() {
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.open("GET", `http://localhost:8080/homevisitlist`, true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send();
+
+            xhttp.onreadystatechange = function() {
+                if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
+
+                    const data = JSON.parse(xhttp.responseText)
+                    var tableString = "<th>Dog</th>" + "<th>Staff</th>";
+                    for (var entry in data) {
+                        var dog = data[entry].dog
+                        var name = data[entry].first_name + " " + data[entry].last_name
+
+                        tableString += formatTableString([dog, name])
+
+                        document.getElementById("homevisits").innerHTML = tableString;
+                    }
+                }
+            };
+        }
+
+    getHomeVisits()
+  </script>
+</head>
+
+<body>
+    <a href="http://localhost:8080/dog">Add New Dog</a>
+    <a href="http://localhost:8080/staff">Add New Staff</a>
+    <a href="http://localhost:8080/homevisit">Add New Homevisit</a>
+
+    <h2>Current HomeVisits</h2>
+    <table id=homevisits></table>
+</body>
+
+</html>
