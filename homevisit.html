@@ -11,25 +11,24 @@ CMPT 353 -->
     "use strict";
 
     function getDogs() {
-          var xhttp = new XMLHttpRequest();
+      var xhttp = new XMLHttpRequest();
 
-          xhttp.open("GET", `http://localhost:8080/doglist`, true);
-          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-          xhttp.send();
+      xhttp.open("GET", `http://localhost:8080/doglist`, true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send();
 
-          xhttp.onreadystatechange = function() {
-              if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
+      xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
 
-                  const data = JSON.parse(xhttp.responseText)
-                  var dogString = ""
-                  for (var entry in data) {
-                    dogString += "<option value=" + data[entry].id + ">" + data[entry].name + "</option>"
-                  }
+          const data = JSON.parse(xhttp.responseText)
+          var dogString = ""
+          for (var entry in data) {
+            dogString += "<option value=" + data[entry].id + ">" + data[entry].name + "</option>"
+          }
 
-                  document.getElementById("dog").innerHTML = dogString;
-              }
-          };
-
+          document.getElementById("dog").innerHTML = dogString;
+        }
+      }
     }
 
     function getStaff() {
@@ -39,19 +38,18 @@ CMPT 353 -->
       xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xhttp.send();
 
-      xhttp.onreadystatechange = function() {
-          if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
+      xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
 
-              const data = JSON.parse(xhttp.responseText)
-              var staffString = ""
-              for (var entry in data) {
-                staffString += "<option value=" + data[entry].id + ">" + data[entry].first_name + " " + data[entry].last_name + "</option>"
-              }
-
-              document.getElementById("staff").innerHTML = staffString;
+          const data = JSON.parse(xhttp.responseText)
+          var staffString = ""
+          for (var entry in data) {
+            staffString += "<option value=" + data[entry].id + ">" + data[entry].first_name + " " + data[entry].last_name + "</option>"
           }
-      };
 
+          document.getElementById("staff").innerHTML = staffString;
+        }
+      }
     }
 
     getDogs()
@@ -68,9 +66,10 @@ CMPT 353 -->
     <label for="staff">Staff:</label>
     <select name="staff" id="staff"></select>
 
-    <input type="submit" value="Submit"/>
+    <input type="submit" value="Submit" />
   </form>
-   <a href="http://localhost:8080">Back</a>
+
+  <a href="http://localhost:8080">Back</a>
 </body>
 
 </html>

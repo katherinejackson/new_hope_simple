@@ -18,40 +18,66 @@ CMPT 353 -->
     }
 
     function getHomeVisits() {
-            var xhttp = new XMLHttpRequest();
+      var xhttp = new XMLHttpRequest();
 
-            xhttp.open("GET", `http://localhost:8080/homevisitlist`, true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send();
+      xhttp.open("GET", `http://localhost:8080/homevisitlist`, true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send();
 
-            xhttp.onreadystatechange = function() {
-                if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
+      xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
 
-                    const data = JSON.parse(xhttp.responseText)
-                    var tableString = "<th>Dog</th>" + "<th>Staff</th>";
-                    for (var entry in data) {
-                        var dog = data[entry].dog
-                        var name = data[entry].first_name + " " + data[entry].last_name
+          const data = JSON.parse(xhttp.responseText)
+          var tableString = "<th>ID</th><th>Dog</th><th>Staff</th><th>Status</th>";
+          var ids = []
 
-                        tableString += formatTableString([dog, name])
+          for (var entry in data) {
+            var id = data[entry].id
+            var dog = data[entry].dog
+            var name = data[entry].first_name + " " + data[entry].last_name
+            var status = data[entry].status
 
-                        document.getElementById("homevisits").innerHTML = tableString;
-                    }
-                }
-            };
+            tableString += formatTableString([id, dog, name, status])
+            ids.push(id)
+          }
+
+          document.getElementById("homevisits").innerHTML = tableString;
+
+          var idString = ""
+          for (var id in ids) {
+            idString += "<option value=" + ids[id] + ">" + ids[id] + "</option>"
+          }
+          document.getElementById("id").innerHTML = idString;
         }
+      };
+    }
 
     getHomeVisits()
   </script>
 </head>
 
 <body>
-    <a href="http://localhost:8080/dog">Add New Dog</a>
-    <a href="http://localhost:8080/staff">Add New Staff</a>
-    <a href="http://localhost:8080/homevisit">Add New Homevisit</a>
+  <a href="http://localhost:8080/dog">Dogs</a>
+  <a href="http://localhost:8080/staff">Staff</a>
+  <a href="http://localhost:8080/homevisit">Add New Homevisit</a>
 
-    <h2>Current HomeVisits</h2>
-    <table id=homevisits></table>
+  <h2>Current HomeVisits</h2>
+  <table id=homevisits></table>
+
+  <h2>Update a HomeVisit</h2>
+  <form action="/update_homevisit" method="post" style="display: flex; flex-direction: column; max-width: 50%;">
+    <label for="id">Id:</label>
+    <select name="id" id="id"></select>
+
+    <label for="status">Status:</label>
+    <select name="status" id="status">
+      <option value=0>Unassigned</option>
+      <option value=1>Pending</option>
+      <option value=2>Complete</option>
+    </select>
+
+    <input type="submit" value="Submit" />
+  </form>
 </body>
 
 </html>

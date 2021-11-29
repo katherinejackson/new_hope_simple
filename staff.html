@@ -6,9 +6,55 @@ CMPT 353 -->
 
 <head>
   <title> 353 project </title>
+  <script type="text/javascript">
+    "use strict";
+
+    function formatTableString(cols) {
+      var returnString = "<tr>"
+      for (var col in cols)
+        returnString += "<td>" + cols[col] + "</td>"
+
+      return returnString += "</tr>"
+    }
+
+    function getStaff() {
+      var xhttp = new XMLHttpRequest();
+
+      xhttp.open("GET", `http://localhost:8080/stafflist`, true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send();
+
+      xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
+
+          const data = JSON.parse(xhttp.responseText)
+          var staffString = ""
+          var tableString = "<th>ID</th><th>First Name</th><th>Last Name</th><th>Phone</th>";
+
+          for (var entry in data) {
+            staffString += "<option value=" + data[entry].id + ">" + data[entry].id + "</option>"
+            var id = data[entry].id
+            var fname = data[entry].first_name
+            var lname = data[entry].last_name
+            var phone = data[entry].phone
+
+            tableString += formatTableString([id, fname, lname, phone])
+          }
+
+          document.getElementById("id").innerHTML = staffString;
+          document.getElementById("staffTable").innerHTML = tableString;
+        }
+      }
+    }
+
+    getStaff()
+  </script>
 </head>
 
 <body>
+  <h2>Staff</h2>
+  <table id=staffTable></table>
+
   <h2>Add a New Staff</h2>
   <form action="/new_staff" method="post" style="display: flex; flex-direction: column; max-width: 50%;">
     <label for="topic">Last Name:</label>
@@ -22,6 +68,25 @@ CMPT 353 -->
 
     <input type="submit" value="Submit">
   </form>
+
+  <h2>Update Staff</h2>
+  <form action="/update_staff" method="post" style="display: flex; flex-direction: column; max-width: 50%;">
+    <label>ID</label>
+    <select name="id" id="id"></select>
+
+    <label for="topic">Last Name:</label>
+    <input name="lastName" id="lastName" type="text" value="">
+
+    <label for="data">First Name:</label>
+    <input id="firstName" name="firstName" type="text" value=""></input>
+
+    <label for="data">Phone Number:</label>
+    <input id="phone" name="phone" type="text" value=""></input>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <a href="http://localhost:8080">Back</a>
 </body>
 
 </html>

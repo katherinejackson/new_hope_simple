@@ -6,9 +6,57 @@ CMPT 353 -->
 
 <head>
   <title> 353 project </title>
+  <script type="text/javascript">
+    "use strict";
+
+    function formatTableString(cols) {
+      var returnString = "<tr>"
+      for (var col in cols)
+        returnString += "<td>" + cols[col] + "</td>"
+
+      return returnString += "</tr>"
+    }
+
+    function getDogs() {
+      var xhttp = new XMLHttpRequest();
+
+      xhttp.open("GET", `http://localhost:8080/doglist`, true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send();
+
+      xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
+
+          const data = JSON.parse(xhttp.responseText)
+          var dogString = ""
+          var tableString = "<th>ID</th><th>Name</th><th>Breed</th><th>Age</th><th>Gender</th><th>Status</th>";
+
+          for (var entry in data) {
+            dogString += "<option value=" + data[entry].id + ">" + data[entry].id + "</option>"
+            var id = data[entry].id
+            var name = data[entry].name
+            var breed = data[entry].breed
+            var age = data[entry].age
+            var gender= data[entry].gender
+            var status = data[entry].status
+
+            tableString += formatTableString([id, name, breed, age, gender, status])
+          }
+
+          document.getElementById("id").innerHTML = dogString;
+          document.getElementById("dogTable").innerHTML = tableString;
+        }
+      }
+    }
+
+    getDogs()
+  </script>
 </head>
 
 <body>
+  <h2>Dogs</h2>
+  <table id=dogTable></table>
+
   <h2>Add a New Dog</h2>
   <form action="/new_dog" method="post" style="display: flex; flex-direction: column; max-width: 50%;">
     <label for="topic">Name:</label>
@@ -22,6 +70,34 @@ CMPT 353 -->
 
     <label for="data">Gender:</label>
     <input id="gender" name="gender" type="text" value=""></input>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <h2>Update Dog</h2>
+  <form action="/update_dog" method="post" style="display: flex; flex-direction: column; max-width: 50%;">
+    <label>ID</label>
+    <select name="id" id="id"></select>
+
+    <label for="topic">Name:</label>
+    <input name="name" id="name" type="text" value="">
+
+    <label for="data">Breed:</label>
+    <input id="breed" name="breed" type="text" value=""></input>
+
+    <label for="data">Age:</label>
+    <input id="age" name="age" type="text" value=""></input>
+
+    <label for="data">Gender:</label>
+    <input id="gender" name="gender" type="text" value=""></input>
+
+    <label for="status">Status:</label>
+    <select name="status" id="status">
+      <option value=0>Unvailable</option>
+      <option value=1>Ready to be Adopted</option>
+      <option value=2>Pending Homevisit</option>
+      <option value=3>Adopted</option>
+    </select>
 
     <input type="submit" value="Submit">
   </form>
