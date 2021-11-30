@@ -35,7 +35,7 @@ CMPT 353 -->
             var id = data[entry].id
             var dog = data[entry].dog
             var name = data[entry].first_name + " " + data[entry].last_name
-            var status = data[entry].status
+            var status = data[entry].status === 1 ? 'Pending' : 'Complete'
 
             tableString += formatTableString([id, dog, name, status])
             ids.push(id)
@@ -88,7 +88,6 @@ CMPT 353 -->
 
     <label for="status">Status:</label>
     <select name="status" id="status">
-      <option value=0>Unassigned</option>
       <option value=1>Pending</option>
       <option value=2>Complete</option>
     </select>

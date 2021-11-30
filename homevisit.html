@@ -42,7 +42,6 @@ CMPT 353 -->
         if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
 
           const data = JSON.parse(xhttp.responseText)
-          var staffString = ""
           for (var entry in data) {
             staffString += "<option value=" + data[entry].id + ">" + data[entry].first_name + " " + data[entry].last_name + "</option>"
           }

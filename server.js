@@ -48,8 +48,9 @@ app.post("/new_dog", function(req, res) {
     var age = req.body.age || 1;
     var breed = req.body.breed || "";
     var gender = req.body.gender || "";
+    var status = 0;
         
-    var query = `INSERT INTO dogs (name, age, breed, gender) VALUES ('${name}', '${age}', '${breed}', '${gender}')`;
+    var query = `INSERT INTO dogs (name, age, breed, gender, status) VALUES ('${name}', '${age}', '${breed}', '${gender}', '${status}')`;
     
     conn.query(query,function (err, data) {
         if (err) throw err;
@@ -78,8 +79,9 @@ app.post("/new_staff", function(req, res) {
 app.post("/new_homevisit", function(req, res) {
     var dog = req.body.dog;
     var staff = req.body.staff;
+    var status = 1;
         
-    var query = `INSERT INTO homevisits(dog, staff) VALUES ('${dog}', '${staff}')`;
+    var query = `INSERT INTO homevisits(dog, staff, status) VALUES ('${dog}', '${staff}', '${status}')`;
     
     conn.query(query,function (err, data) {
         if (err) throw err;
