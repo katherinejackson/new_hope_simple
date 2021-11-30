@@ -41,10 +41,26 @@ CMPT 353 -->
             tableString += formatTableString([id, fname, lname, phone])
           }
 
-          document.getElementById("id").innerHTML = staffString;
+          document.getElementById("update-id").innerHTML = staffString;
+          document.getElementById("delete-id").innerHTML = staffString;
           document.getElementById("staffTable").innerHTML = tableString;
         }
       }
+    }
+
+    function deleteStaff() {
+      var id = document.getElementById("delete-id").value
+      var xhttp = new XMLHttpRequest();
+
+      xhttp.open("DELETE", `http://localhost:8080/delete_staff`, true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send(JSON.stringify({id: id}));
+
+      xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
+          getStaff()
+        }
+      };
     }
 
     getStaff()
@@ -72,7 +88,7 @@ CMPT 353 -->
   <h2>Update Staff</h2>
   <form action="/update_staff" method="post" style="display: flex; flex-direction: column; max-width: 50%;">
     <label>ID</label>
-    <select name="id" id="id"></select>
+    <select name="id" id="update-id"></select>
 
     <label for="topic">Last Name:</label>
     <input name="lastName" id="lastName" type="text" value="">
@@ -85,6 +101,11 @@ CMPT 353 -->
 
     <input type="submit" value="Submit">
   </form>
+
+  <h2>Delete a Staff</h2>
+  <label for="id">Id:</label>
+  <select name="id" id="delete-id"></select>
+  <button onclick="deleteStaff()">Delete Staff</button>
 
   <a href="http://localhost:8080">Back</a>
 </body>

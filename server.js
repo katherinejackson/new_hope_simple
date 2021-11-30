@@ -171,6 +171,44 @@ app.post("/update_homevisit", function(req, res) {
     
 }); 
 
+app.delete("/delete_dog", function(req, res) {
+    var id = JSON.parse(Object.keys(req.body)[0]).id
+        
+    var query = `DELETE from dogs WHERE id=${id}`;
+    
+    conn.query(query,function (err, data) {
+        if (err) throw err;
+        else console.log("deleted Dog"); 
+        res.status(204).send();
+    });
+    
+}); 
+
+app.delete("/delete_staff", function(req, res) {
+    var id = JSON.parse(Object.keys(req.body)[0]).id
+        
+    var query = `DELETE from staff WHERE id=${id}`;
+    
+    conn.query(query,function (err, data) {
+        if (err) throw err;
+        else console.log("deleted Staff"); 
+        res.status(204).send();
+    });
+}); 
+
+
+app.delete("/delete_homevisit", function(req, res) {
+    var id = JSON.parse(Object.keys(req.body)[0]).id
+    console.log(id)
+        
+    var query = `DELETE from homevisits WHERE id=${id}`;
+    
+    conn.query(query,function (err, data) {
+        if (err) throw err;
+        else console.log("deleted Homevisit"); 
+        res.status(204).send();
+    });
+}); 
 
 
 app.listen(PORT, function() {

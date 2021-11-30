@@ -43,10 +43,26 @@ CMPT 353 -->
             tableString += formatTableString([id, name, breed, age, gender, status])
           }
 
-          document.getElementById("id").innerHTML = dogString;
+          document.getElementById("update-id").innerHTML = dogString;
+          document.getElementById("delete-id").innerHTML = dogString;
           document.getElementById("dogTable").innerHTML = tableString;
         }
       }
+    }
+
+    function deleteDog() {
+      var id = document.getElementById("delete-id").value
+      var xhttp = new XMLHttpRequest();
+
+      xhttp.open("DELETE", `http://localhost:8080/delete_dog`, true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send(JSON.stringify({id: id}));
+
+      xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status >= 200 && xhttp.status < 300 && xhttp.responseText) {
+          getDogs()
+        }
+      };
     }
 
     getDogs()
@@ -77,7 +93,7 @@ CMPT 353 -->
   <h2>Update Dog</h2>
   <form action="/update_dog" method="post" style="display: flex; flex-direction: column; max-width: 50%;">
     <label>ID</label>
-    <select name="id" id="id"></select>
+    <select name="id" id="update-id"></select>
 
     <label for="topic">Name:</label>
     <input name="name" id="name" type="text" value="">
@@ -101,6 +117,11 @@ CMPT 353 -->
 
     <input type="submit" value="Submit">
   </form>
+
+  <h2>Delete a Dog</h2>
+  <label for="id">Id:</label>
+  <select name="id" id="delete-id"></select>
+  <button onclick="deleteDog()">Delete Dog</button>
 
   <a href="http://localhost:8080">Back</a>
 </body>
